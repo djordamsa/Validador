@@ -5,15 +5,22 @@ import pandas , csv
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ['cvs','xlsx']
+           filename.rsplit('.', 1)[1].lower() in ['csv','xlsx']
 
 def verificaciones(file, filename: str):
-    df = pandas.read_excel(file, engine='openpyxl')
+    filename,ftype= filename.rsplit('.')
+   
+    
+    
+   
+    if ftype == 'xlsx':
+        df = pandas.read_excel(file, engine='openpyxl')
+    elif ftype=='csv':
+        df= pandas.read_csv(file)
     
     
     
-    filename= filename.split('.')[0]
-    print(filename)
+   
     flash=[]
     tags_list={
         'mesas':['codeleccion',
@@ -68,7 +75,23 @@ def verificaciones(file, filename: str):
                                              'deslocal',
                                              'mesa',
                                              'codseguridad',
-                                             'ctx']
+                                             'ctx'],
+        
+        'mesas_certificados':['codeleccion'
+                              , 'deseleccio',
+                              'codcandidatura',
+                              'descandida',
+                              'coddepartamento',
+                              'desdeparta',
+                              'coddistrito',
+                              'desdistrit',
+                              'codzona',
+                              'deszona',
+                              'codlocal',
+                              'deslocal',
+                              'mesa',
+                              'codseguridad',
+                              'ctx']
         
         
         
@@ -136,6 +159,22 @@ def verificaciones(file, filename: str):
                                              'codseguridad':int,
                                              'ctx':int,
                                              },
+        
+        'mesas_certificados':{'codeleccion': int,
+                              'deseleccio': str,
+                              'codcandidatura':int,
+                              'descandida': str,
+                              'coddepartamento': int,
+                              'desdeparta':str,
+                              'coddistrito': int,
+                              'desdistrit': str,
+                              'codzona': int,
+                              'deszona':str,
+                              'codlocal':int,
+                              'deslocal':str,
+                              'mesa':int,
+                              'codseguridad':int,
+                              'ctx':int},
         
             
             
