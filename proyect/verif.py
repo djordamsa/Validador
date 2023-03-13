@@ -148,7 +148,7 @@ def verificaciones(filename = str):
         flash.append(f'El numero de columnas del archivos mesas.xlsx es de {len(df.columns.to_list())}, este deberia tener {len(tags_list[filename])}. Por favor revise el archivo')
 
 
-    ## aca hay un error cuando en el excel hay 0, al pasarlos a pandas me toma como que son float y marcaria error.
+    ## aca hay un error cuando en el excel hay 0, al pasarlos a pandas me toma como que el 0 es type float entonces me marcaria error.
     ## que recomendarias hacer en este caso??
     for el in tags_list[filename]:
         if len(set([type(row) for row in df[el].to_list()])) == 1:
