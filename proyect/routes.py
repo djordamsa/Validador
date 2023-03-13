@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, flash, Flask, request, redirect, url_for
 from proyect.modules import UploadFileForm
 from werkzeug.utils import secure_filename
 import os
-from flask import Flask
-from proyect.verif import verificaciones
+
+from proyect.verif import verificaciones, allowed_file
+
 
 
 pages = Blueprint(
@@ -16,20 +17,22 @@ pages = Blueprint(
 def index():
     form=UploadFileForm()
     if form.validate_on_submit():
+        
         file = form.file.data
         
-        ## aca tendria que entrar las verificiaciones, pero
-        ## la funcion verificaciones esta hecha usando el nombre de el archivo y llamando los samples que me dio maxi.
-        ## tendria que ver como hago para inicializar la funcion pasandole el archivo como parametro.
-        isValid,flash=verificaciones(file)
-        
-        if isValid:
-            ## Aca guardaria las files en static, no se si hay una mejor manera de hacerlo, si es que va a un server o algo asi.
-            file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),secure_filename(file.filename))) 
-            return "Archivo cargado con exito"
-        else:
-            return ### aca irian los flash de los errores. Despues busco como se hace que no recuerdo.
+        if allowed_file(file.filename):
     
+            isValid,flash=verificaciones(file, file.filename)
+        
+            if isValid:
+                ## Aca guardaria las files en static, no se si hay una mejor manera de hacerlo, si es que va a un server o algo asi.
+                file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),secure_filename(file.filename))) 
+                print(flash)
+            else:
+                print(f"{flash}")### aca irian los flash de los errores. Despues busco como se hace que no recuerdo.
+        else:
+            print("solo se aceptan formatos cvs y exel")
+            
     return render_template(
         "home.html",
         form=form,

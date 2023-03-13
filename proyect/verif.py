@@ -1,7 +1,19 @@
 import pandas , csv
-def verificaciones(filename = str):
-    df = pandas.read_excel(f'/home/djorda/Escritorio/validadores/Validador/Datos_v7/{filename}', engine='openpyxl')
-    filename= filename[0:-5]
+
+
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ['cvs','xlsx']
+
+def verificaciones(file, filename: str):
+    df = pandas.read_excel(file, engine='openpyxl')
+    
+    
+    
+    filename= filename.split('.')[0]
+    print(filename)
     flash=[]
     tags_list={
         'mesas':['codeleccion',
@@ -163,4 +175,4 @@ def verificaciones(filename = str):
     if len(flash) > 0:
         return False, flash
     else: 
-        return True , flash
+        return True , "Archivo cargado con exito"
