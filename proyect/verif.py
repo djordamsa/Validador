@@ -1,4 +1,5 @@
 import pandas , csv
+from typing import List
 
 
 
@@ -8,6 +9,9 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ['csv','xlsx']
 
 def verificaciones(file, filename: str):
+    
+    print(f"Analizando {filename}")  
+    
     filename,ftype= filename.rsplit('.')
    
     
@@ -185,14 +189,13 @@ def verificaciones(file, filename: str):
         
         
         
-           
+      
            
   
     
     for el in df.columns.to_list():
         if el not in tags_list[filename]:
-            flash.append(f'el titulo "{el}"  de la columna no coincide con los titulos de la lista precisada')
-            flash.append(f'La lista debe contener los siguientes titulos de columna {tags_list[filename]}')
+            flash.append(f'el titulo "{el}"  de la columna no coincide con los titulos de la lista precisada. La lista debe contener los siguientes titulos de columna {tags_list[filename]}')
     
    
     if len(df.columns.to_list()) != len(tags_list[filename]):
@@ -209,9 +212,13 @@ def verificaciones(file, filename: str):
                 flash.append(f'error en {el} sus datos deberian ser {types[filename][el]}')
         else:
             flash.append(f'error en {el}, hay mas de un tipo de datos en la columna')
+            #print(set([type(row) for row in df[el].to_list()]))
             
     
     if len(flash) > 0:
         return False, flash
     else: 
         return True , "Archivo cargado con exito"
+    
+    
+  

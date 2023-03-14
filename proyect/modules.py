@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import FileField , SubmitField, validators, ValidationError
+from wtforms import MultipleFileField , SubmitField, validators, ValidationError
 
 def my_length_check(form, field):
     file_names=['mesas', 'candidatos', 'candidaturas' , 'listas', 'mesas_certificados','mesas_candidaturas_seguridad_trep']
@@ -10,5 +10,5 @@ def my_length_check(form, field):
     
     
 class UploadFileForm(FlaskForm):
-    file=FileField("File")
+    file=MultipleFileField("File(s)")
     submit=SubmitField("Upload File")

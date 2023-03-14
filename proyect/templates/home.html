@@ -9,13 +9,29 @@
     <link rel="stylesheet" href="static/font/inter/Inter-VariableFont_slnt,wght.ttfss">
 </head>
 <body>
-    <h1>validator</h1>
-        <form method="POST" enctype='multipart/form-data'>
-            {{form.hidden_tag()}}
-            <li>{{form.file()}}</li>
-            <li>{{form.submit()}}</li>
+    <header>
+        <div class="header__ls">
+            <img src="" alt="msa-logo">
+        </div>
+        <div class="header__c">
+            <h1 class="page__title">Titulo de la pagina</h1>
+        </div>
+        <div class="header__rs">
+            <div class="login__container">
+                <a href="">Log In</a>
+            </div>
+        </div>
 
-        </form>
+    </header>
+    <div class="main__container">
+            <h1>Ingrese aqui los archivos</h1>
+            <form method="POST" enctype='multipart/form-data'>
+                {{form.hidden_tag()}}
+                <li>{{form.file()}}</li>
+                <li>{{form.submit()}}</li>
 
+            </form>
+    </div>
 </body>
+
 </html>

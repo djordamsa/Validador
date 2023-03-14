@@ -18,20 +18,20 @@ def index():
     form=UploadFileForm()
     if form.validate_on_submit():
         
-        file = form.file.data
-        
-        if allowed_file(file.filename):
+        for file in form.file.data:
+            
+            if allowed_file(file.filename):
     
-            isValid,flash=verificaciones(file, file.filename)
+                isValid,flash=verificaciones(file, file.filename)
         
-            if isValid:
-                ## Aca guardaria las files en static, no se si hay una mejor manera de hacerlo, si es que va a un server o algo asi.
-                file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),secure_filename(file.filename))) 
-                print(flash)
+                if isValid:
+                    ## Aca guardaria las files en static, no se si hay una mejor manera de hacerlo, si es que va a un server o algo asi.
+                    file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),secure_filename(file.filename))) 
+                    print(flash)
+                else:
+                    print(f"{flash}")### aca irian los flash de los errores. Despues busco como se hace que no recuerdo.
             else:
-                print(f"{flash}")### aca irian los flash de los errores. Despues busco como se hace que no recuerdo.
-        else:
-            print("solo se aceptan formatos cvs y exel")
+                print("solo se aceptan formatos cvs y exel")
             
     return render_template(
         "home.html",
