@@ -8,11 +8,11 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ['csv','xlsx']
 
-def verificaciones(file, filename: str):
+def verificaciones(file, name: str):
     
-    print(f"Analizando {filename}")  
+    print(f"Analizando {name}")  
     
-    filename,ftype= filename.rsplit('.')
+    filename,ftype= name.rsplit('.')
    
     
     
@@ -187,38 +187,56 @@ def verificaciones(file, filename: str):
         }
         
         
-        
+   
         
       
            
   
-    
+    # Analisis de titulos de las columnas
     for el in df.columns.to_list():
         if el not in tags_list[filename]:
             flash.append(f'el titulo "{el}"  de la columna no coincide con los titulos de la lista precisada. La lista debe contener los siguientes titulos de columna {tags_list[filename]}')
     
-   
+   # Analisis de cantidad de columnas
     if len(df.columns.to_list()) != len(tags_list[filename]):
-        flash.append(f'El numero de columnas del archivos mesas.xlsx es de {len(df.columns.to_list())}, este deberia tener {len(tags_list[filename])}. Por favor revise el archivo')
+        flash.append(f'El numero de columnas del archivo es de {len(df.columns.to_list())}, este deberia tener {len(tags_list[filename])}. Por favor revise el archivo')
 
 
-    ## aca hay un error cuando en el excel hay 0, al pasarlos a pandas me toma como que son float y marcaria error.
-    ## que recomendarias hacer en este caso??
+
+
     for el in tags_list[filename]:
-        if len(set([type(row) for row in df[el].to_list()])) == 1:
-            if types[filename][el] in set([type(row) for row in df[el].to_list()]):
-                pass
+        
+        ## Analisis de elementos NaN
+        hasnull: bool = False
+        for row in df[el]:
+            if pandas.isna(row):
+                hasnull= True
+        if hasnull:
+            flash.append(f"{el} posee filas vacias")
+        
+        #Analisis de type (necesito que esten todas las filas llenas).
+        else: 
+            # Solo un tipo de datos
+            if len(set([type(row) for row in df[el].to_list()])) == 1:
+                #Correccion en caso de que el pandas me tome los numeros por floats
+                if set([type(row) for row in df[el].to_list()]) == {float}:
+                    df[el].astype(int)
+                    
+                #verificacion que el tipo de datos es el esperado
+                
+                if types[filename][el] not in set([type(row) for row in df[el].to_list()]):
+                    
+                    flash.append(f'error en {el} sus datos deberian ser {types[filename][el]}, {set([type(row) for row in df[el].to_list()])}')
+                
             else:
-                flash.append(f'error en {el} sus datos deberian ser {types[filename][el]}')
-        else:
-            flash.append(f'error en {el}, hay mas de un tipo de datos en la columna')
-            #print(set([type(row) for row in df[el].to_list()]))
+                flash.append(f'error en {el}, hay mas de un tipo de datos en la columna')
+            
             
     
     if len(flash) > 0:
         return False, flash
     else: 
-        return True , "Archivo cargado con exito"
+        return True , "El Archivo fue cargado con exito"
     
     
   
