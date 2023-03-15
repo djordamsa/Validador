@@ -1,0 +1,137 @@
+:root{
+    
+
+    --main-font:sans-serif;
+    --font-size:16px;
+    --background:#868686;
+    --Blue:#0d2b71;
+    --light-Blue:#8dc3f3;
+    --mid-Blue:#399ade;
+    --dark-Gray:#414244e0;
+    --Ivory:#F9F9F9;
+    --Middle-Gray:#B1B3B6;
+    --Light-Gray:#E8E8E8;
+    
+
+}
+
+html{
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter',' Roboto', sans-serif ,'Segoe UI', Tahoma, Verdana, sans-serif;
+    
+}
+body{
+    margin: 0;
+    padding: 0;
+}
+
+h1,h2,h3{
+color:var(--Green)
+}
+h2{
+    font-size: 20px;
+    font-weight: bold;
+    
+}
+h1{
+    font-size: 24px;
+    font-weight: bold;
+    
+}
+
+.body2{
+    font-size: 16px;
+    color: var(--dark-Gray);
+    
+    
+}
+.body3{
+    font-size: 13px;
+    
+}
+.header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 5rem;
+   
+
+    
+    background-color: var(--Blue);
+    color: var(--Ivory);
+
+}
+.header__ls{
+    margin-left: 1rem;
+    display: inherit;
+    justify-content: start;
+    width:20%
+}
+.header__c{
+    display: flex;
+    justify-content: center;
+    width: 60%;
+   
+}
+.header__rs{
+    margin-right: 1rem;
+    display: inherit;
+    justify-content: end;
+    width: 20%;
+}
+main{
+    background-color: var(--light-Blue);
+    height: 100vh;
+}
+.main__container{
+    display: flex;
+    flex-direction: column;
+    
+    align-self: center;
+    width:70vw;
+    margin: 0 auto;
+    background-color: var(--Ivory);
+    height: 100vh;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    
+    
+
+}
+
+.section{
+    margin-top: 2rem;
+}
+
+.description__section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    
+    
+    
+    
+
+}
+
+.sec__title{
+    color: var(--Blue);
+}
+
+.entendido__btn{
+    margin-top: 2rem;
+    background-color: var(--mid-Blue);
+    color: var(--Ivory);
+    padding: 0.7rem 0.4rem;
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0.5px 0.5px var(--mid-Blue);
+
+}
+
+.entendido__btn:hover{
+    background-color: var(--light-Blue);
+}

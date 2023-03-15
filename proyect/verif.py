@@ -10,7 +10,9 @@ def allowed_file(filename):
 
 def verificaciones(file, name: str):
     
-    print(f"Analizando {name}")  
+    flash=[]
+    print(f"Analizando {name}")
+     
     
     filename,ftype= name.rsplit('.')
    
@@ -25,7 +27,7 @@ def verificaciones(file, name: str):
     
     
    
-    flash=[]
+    
     tags_list={
         'mesas':['codeleccion',
                 'deseleccion',
@@ -188,9 +190,6 @@ def verificaciones(file, name: str):
         
         
    
-        
-      
-           
   
     # Analisis de titulos de las columnas
     for el in df.columns.to_list():
@@ -233,10 +232,15 @@ def verificaciones(file, name: str):
             
             
     
+   
+           
+    
+    
     if len(flash) > 0:
         return False, flash
     else: 
-        return True , "El Archivo fue cargado con exito"
+        flash.append("El Archivo fue cargado con exito")
+        return True , flash
     
     
   

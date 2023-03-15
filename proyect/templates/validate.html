@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="stylesheet" href="static/font/inter/Inter-VariableFont_slnt,wght.ttfss">
+</head>
+<body>
+    <header class="header">
+        <div class="header__ls">
+            <img src="" alt="msa-logo">
+        </div>
+        <div class="header__c">
+            <h1 class="page__title">Titulo de la pagina</h1>
+        </div>
+        <div class="header__rs">
+            <div class="login__container">
+                <a href="">Log In</a>
+            </div>
+        </div>
+
+    </header>
+    <main>
+    <div class="main__container">
+
+       
+        <section class="section">
+            <div class="upload__section">
+                <h1 class="upload__title">Ingrese aqui los archivos</h1>
+                <form method="POST" enctype='multipart/form-data' class="upload__form">
+                    {{form.hidden_tag()}}
+                    <li>{{form.file()}}</li>
+                    <li>{{form.submit()}}</li>
+
+                </form>
+            </div>
+        </section>
+        <section class="section">
+            <div class="errors__section">
+                {% for el in status%}
+                    {% if el.startswith("Validando")  %}
+                        <h3 class="errors__file">{{el}}</h3>
+                    {% else %}
+                        <p class="errors__description">{{el}}</p>
+                    {% endif %}    
+                    
+                {% endfor %}
+
+            </div>
+        </section>
+    
+        </div>
+    </main>
+    <footer>
+        <p>asda asdas dasd
+            
+        </p>
+    </footer>
+</body>
+
+</html>

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="static/font/inter/Inter-VariableFont_slnt,wght.ttfss">
 </head>
 <body>
-    <header>
+    <header class="header">
         <div class="header__ls">
             <img src="" alt="msa-logo">
         </div>
@@ -23,15 +23,27 @@
         </div>
 
     </header>
+    <main>
     <div class="main__container">
-            <h1>Ingrese aqui los archivos</h1>
-            <form method="POST" enctype='multipart/form-data'>
-                {{form.hidden_tag()}}
-                <li>{{form.file()}}</li>
-                <li>{{form.submit()}}</li>
+        <section class="section">
+        <div class="description__section">
+            <h1 class="sec__title">
+                Condiciones del archivo
+            </h1>
+            <p class="files__terms__description body2">
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente dolore tempore facilis officiis reprehenderit deserunt inventore, iste laboriosam aliquam sint illum porro, beatae quis? Voluptates minus provident vero sequi non.
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Explicabo, expedita nesciunt natus deserunt eveniet laudantium, consequatur voluptatibus assumenda quos aperiam molestias eius, doloremque dolorum sunt blanditiis hic a quisquam unde.
+                Error porro molestiae corporis delectus dignissimos atque magni. Maiores a, harum ipsum provident dolor nihil voluptatibus, quaerat, itaque error officia alias! Repellendus doloribus nisi dolores magni adipisci aliquam eius quisquam!
+                Vero assumenda voluptatum ad officiis maxime tempore corrupti! Dolores ipsa ducimus alias reprehenderit, quo tenetur. A perferendis tempora saepe magnam architecto porro iusto doloribus, fugit, quas accusamus sint, recusandae dolor.
+                Iste eius suscipit cum voluptatem quae consequatur quibusdam ullam nisi sapiente, quaerat, sunt modi quas nobis necessitatibus ab nam! Aliquam quod aliquid quia nobis temporibus vel libero earum, magnam esse.
+            </p>
+            <a href="{{url_for('pages.validate')}}" class="entendido__btn">Entendido</a>
 
-            </form>
+        </div>
+        
+    </section> 
     </div>
+    </main>
 </body>
 
 </html>
