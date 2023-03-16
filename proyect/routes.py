@@ -21,6 +21,7 @@ def index():
         "home.html",
         
         
+        
     )
     
 @pages.route("/validate" ,methods=['GET','POST'])

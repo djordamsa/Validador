@@ -11,10 +11,14 @@
 <body>
     <header class="header">
         <div class="header__ls">
-            <img src="" alt="msa-logo">
+            
         </div>
         <div class="header__c">
-            <h1 class="page__title">Titulo de la pagina</h1>
+            <div class="img__1__container">
+                <img src="static/Group-1.svg" alt="" class="img__1">
+              
+                  <img src="static/Group.svg" alt="" class="img__2">
+            </div>
         </div>
         <div class="header__rs">
             <div class="login__container">
@@ -28,17 +32,163 @@
         <section class="section">
         <div class="description__section">
             <h1 class="sec__title">
-                Condiciones del archivo
+                Validador de archivo de datos
             </h1>
-            <p class="files__terms__description body2">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente dolore tempore facilis officiis reprehenderit deserunt inventore, iste laboriosam aliquam sint illum porro, beatae quis? Voluptates minus provident vero sequi non.
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Explicabo, expedita nesciunt natus deserunt eveniet laudantium, consequatur voluptatibus assumenda quos aperiam molestias eius, doloremque dolorum sunt blanditiis hic a quisquam unde.
-                Error porro molestiae corporis delectus dignissimos atque magni. Maiores a, harum ipsum provident dolor nihil voluptatibus, quaerat, itaque error officia alias! Repellendus doloribus nisi dolores magni adipisci aliquam eius quisquam!
-                Vero assumenda voluptatum ad officiis maxime tempore corrupti! Dolores ipsa ducimus alias reprehenderit, quo tenetur. A perferendis tempora saepe magnam architecto porro iusto doloribus, fugit, quas accusamus sint, recusandae dolor.
-                Iste eius suscipit cum voluptatem quae consequatur quibusdam ullam nisi sapiente, quaerat, sunt modi quas nobis necessitatibus ab nam! Aliquam quod aliquid quia nobis temporibus vel libero earum, magnam esse.
-            </p>
-            <a href="{{url_for('pages.validate')}}" class="entendido__btn">Entendido</a>
+            <h2 class="files__terms__description body2">
+                Estimado usuario, en esta plataforma fue creada con la intención de validar la información proporcionada por usted. De manera tal, que los archivos proporcionados posean la información exacta que se requiere para el proyecto.
+            
+            </h2>
+            <p class="body2">Los formatos de archivo que se aceptan son Excel (.xlsx) y Comma Separated Values (.csv)</p>
+            <h3>El nombre de los archivos deben estar incluidos dentro de los siguientes.</h3>
+            <ul>
+                <li class="body3">mesas</li>
+                <li class="body3">listas</li>
+                <li class="body3">candidatos</li>
+                <li class="body3">candidaturas</li>
+                <li class="body3">mesas_certificados</li>
+                <li class="body3">mesas_candidaturas_seguridad_trep</li>
+            </ul>
+            <p class="body2">Nota: No se aceptaran archivos que no posean alguno de estos nombres.</p>
+            <h3>Cada uno de los archivos debe cumplir con las condiciones redactadas a continuación.</h3>
+            <ul>
+                <li class="body3">No debe poseer datos vacíos.</li>
+                <li class="body3">La cantidad de columnas dentro del archivo debe ser la requerida.</li>
+                <li class="body3">El nombre de las columnas debe estar dentro de los nombres esperados, de manera ordenada o desordenada.</li>
+                <li class="body3">La informacion dentro de la celda debe pertenecer al tipo de dato que se espera.</li>
+            </ul>
+            <h3>Composicion de los archivos</h3>
+            <p class="body2">nombre de la columna : tipo de dato esperado</p>
+            <p class="body2">mesas</p>
+            <ul>
+                <li class="body3">codeleccion: numeros</li>
+                <li class="body3">deseleccion: palabras</li>
+                <li class="body3">coddepartamento: numeros</li>
+                <li class="body3">desdepartamento: palabras</li>
+                <li class="body3">coddistrito: numeros</li>
+                <li class="body3">desdistrito: palabras</li>
+                <li class="body3">codzona: numeros</li>
+                <li class="body3">deszona: palabras</li>
+                <li class="body3">codlocal: numeros</li>
+                <li class="body3">deslocal: palabras</li>
+                <li class="body3">mesa: numeros</li>
+                <li class="body3">tipo: palabras</li>
+                <li class="body3">id_credencial: numeros</li>
+                
 
+            </ul>
+            <p class="body2">listas</p>
+            <ul>
+                <li class="body3">COD_ELECCION: numeros</li>
+                <li class="body3">CODLISTA: numeros</li>
+                <li class="body3">DESCRIPCION: palabras</li>
+                <li class="body3">DESCRIPCION_CORTA: palabras</li>
+                <li class="body3">NUMLISTA: palabras </li>
+                <li class="body3">NRO_ORDEN: numeros</li>
+                
+            </ul>
+            
+            <p class="body2">candidatos</p>
+            <ul>
+                <li class="body3">IDCANDIDATO: numeros</li>
+                <li class="body3">CODCANDIDATURA: numeros</li>
+                <li class="body3">CODELECCION: numeros</li>
+                <li class="body3">CODDEPARTAMENTO: numeros</li>
+                <li class="body3">CODDISTRITO: numeros</li>
+                <li class="body3">CODZONA: numeros</li>
+                <li class="body3">CODLISTA: numeros</li>
+                <li class="body3">ORDEN: numeros</li>
+                <li class="body3">NOMBRE: palabras</li>
+            </ul>
+            
+            <p class="body2">
+               candidaturas 
+            </p>
+            <ul>
+                <li class="body3">codcandidatura: numeros</li>
+                <li class="body3">descripcion: palabras</li>
+                <li class="body3">nivel: palabras</li>
+                <li class="body3">nro_orden: numeros</li>
+                <li class="body3">tipo: numeros</li>
+                <li class="body3">descripcion_corta:  palabras</li>
+            </ul>
+            
+            <p class="body2">mesas_certificados</p>
+            <ul>
+                <li class="body3">codeleccion: numeros</li>
+                <li class="body3">deseleccio: palabras</li>
+                <li class="body3">codcandidatura: numeros</li>
+                <li class="body3">descandida: palabras</li>
+                <li class="body3">coddepartamento: numeros</li>
+                <li class="body3">desdeparta: palabras</li>
+                <li class="body3">coddistrito: numeros</li>
+                <li class="body3">desdistrit: palabras</li>
+                <li class="body3">codzona: numeros</li>
+                <li class="body3">deszona: palabras</li>
+                <li class="body3">codlocal: numeros</li>
+                <li class="body3">deslocal: palabras</li>
+                <li class="body3">mesa: numeros</li>
+                <li class="body3">codseguridad: numeros</li>
+                <li class="body3">ctx: numeros</li>
+            </ul>
+
+            <p class="body2">mesas_candidaturas_seguridad_trep</p>
+
+            <ul>
+                <li class="body3">codeleccio: numeros</li>
+                <li class="body3">deseleccio: palabras</li>
+                <li class="body3">cod_candid: numeros</li>
+                <li class="body3">descandida: palabras</li>
+                <li class="body3">coddeparta: numeros</li>
+                <li class="body3">desdeparta: palabras</li>
+                <li class="body3">coddistrit: numeros</li>
+                <li class="body3">desdistrit: palabras</li>
+                <li class="body3">codzona: numeros</li>
+                <li class="body3">deszona: palabras</li>
+                <li class="body3">codlocal: numeros</li>
+                <li class="body3">deslocal: palabras</li>
+                <li class="body3">mesa: numeros</li>
+                <li class="body3">codseguridad: numeros</li>
+                <li class="body3">ctx: numeros</li>
+            </ul>
+
+            
+                                             
+              
+                                             
+                                             
+                                             
+                                             
+                                             
+            
+            
+                              
+                              
+                             
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <div class="btn__container">
+            <a href="{{url_for('pages.validate')}}" class="entendido__btn">Entendido</a>
+            </div>
         </div>
         
     </section> 
