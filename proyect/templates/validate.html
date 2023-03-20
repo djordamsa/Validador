@@ -29,11 +29,14 @@
        
         <section class="section">
             <div class="upload__section">
-                <h1 class="upload__title">Ingrese aqui los archivos</h1>
+                <h1 class="sec__title">Ingrese aqui los archivos</h1>
                 <form method="POST" enctype='multipart/form-data' class="upload__form">
                     {{form.hidden_tag()}}
-                    <li>{{form.file()}}</li>
-                    <li>{{form.submit()}}</li>
+                    <div class="pick__file__container">
+                    {{form.file.label(class="pick__file")}}
+                    {{form.submit(class="validar__btn")}}
+                    </div>
+                    <div>{{form.file()}}</div>
 
                 </form>
             </div>
@@ -54,7 +57,7 @@
     
         </div>
     </main>
-    <footer>
+    <footer class="footer">
         <p>asda asdas dasd
             
         </p>

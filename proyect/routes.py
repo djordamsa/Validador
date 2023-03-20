@@ -2,9 +2,11 @@ from flask import Blueprint, render_template, flash, Flask, request, redirect, u
 from proyect.modules import UploadFileForm
 from werkzeug.utils import secure_filename
 import os
-
+import pandas
 from proyect.verif import verificaciones, allowed_file
-
+from proyect.formater import paises, districtos, departamentos, localidades, establecimientos, mesas, listas
+import time
+from pathlib import Path
 
 
 pages = Blueprint(
@@ -26,6 +28,8 @@ def index():
     
 @pages.route("/validate" ,methods=['GET','POST'])
 def validate():
+    
+    
     form=UploadFileForm()
     if form.validate_on_submit():
         
@@ -39,13 +43,38 @@ def validate():
         
                 if isValid:
                     ## Aca guardaria las files en static, no se si hay una mejor manera de hacerlo, si es que va a un server o algo asi.
-                    file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),secure_filename(file.filename))) 
-                
-            else:
-                status.append(f'Solo se aceptan formatos cvs y exel')
+                    # los archivos excel se guaran dañados.Por lo tanto en verificaciones los guardo como csv.
+                    #file.save(os.path.join(os.path.abspath(os.path.dirname('proyect/static/files/upload_files/')),secure_filename(file.filename))) 
+                    pass
+                 
+                        
+                        
+                    
+                else: status.append(f'Solo se aceptan formatos cvs y exel')
             
             for el in flash:
                 status.append(el)    
+                
+                
+        ##formating
+        
+
+        
+            
+        upload_directory=Path('proyect/static/files/upload_files')
+        formated_directory=Path('proyect/static/files/formated_files')
+        paises(upload_directory)  
+        districtos(upload_directory)
+        departamentos(upload_directory)
+        localidades(upload_directory)
+        establecimientos(upload_directory)
+        mesas(upload_directory)
+        listas(upload_directory)
+        
+
+                        
+            
+            
             
         return render_template("validate.html",
         form=form,

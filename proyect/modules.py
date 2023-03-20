@@ -10,5 +10,5 @@ def my_length_check(form, field):
     
     
 class UploadFileForm(FlaskForm):
-    file=MultipleFileField("File(s)")
-    submit=SubmitField("Upload File")
+    file=MultipleFileField("Selecciona Los Archivos")
+    submit=SubmitField("Validar")

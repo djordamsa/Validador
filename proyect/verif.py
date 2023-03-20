@@ -106,81 +106,81 @@ def verificaciones(file, name: str):
     
     
     
-    types={'mesas':{'codeleccion': int,
-        'deseleccion': str,
-        'coddepartamento': int,
-        'desdepartamento': str,
-        'coddistrito': int,
-        'desdistrito':str,
-        'codzona':int,
-        'deszona': str,
-        'codlocal': int,
-        'deslocal': str,
-        'mesa': int,
-        'tipo': str,
-        'id_credencial' : int},
+    types={'mesas':{'codeleccion':['int'],
+        'deseleccion':['str'],
+        'coddepartamento':['int'],
+        'desdepartamento':['str'],
+        'coddistrito':['int'],
+        'desdistrito':['str'],
+        'codzona':['int'],
+        'deszona':['str'],
+        'codlocal':['int'],
+        'deslocal':['str'],
+        'mesa':['int'],
+        'tipo':['str'],
+        'id_credencial' :['int']},
            
         'candidatos':{
-            'IDCANDIDATO': int,
-            'CODCANDIDATURA': int,
-            'CODELECCION': int,
-            'CODDEPARTAMENTO':int,
-            'CODDISTRITO': int,
-            'CODZONA': int,
-            'CODLISTA': int,
-            'ORDEN': int,
-            'NOMBRE': str,},
+            'IDCANDIDATO': ['int'],
+            'CODCANDIDATURA': ['int'],
+            'CODELECCION': ['int'],
+            'CODDEPARTAMENTO':['int'],
+            'CODDISTRITO': ['int'],
+            'CODZONA': ['int'],
+            'CODLISTA': ['int'],
+            'ORDEN': ['int'],
+            'NOMBRE': ['str'],},
         
         'candidaturas':{ 
-            'codcandidatura': int,
-            'descripcion':str,
-            'nivel':str,
-            'nro_orden': int,
-            'tipo': int,
-            'descripcion_corta':str,
+            'codcandidatura': ['int'],
+            'descripcion':['str'],
+            'nivel':['str'],
+            'nro_orden': ['int'],
+            'tipo': ['int'],
+            'descripcion_corta':['str'],
         },
         
         'listas':{
-            'COD_ELECCION': int,
-            'CODLISTA':int,
-            'DESCRIPCION': str,
-            'DESCRIPCION_CORTA':str,
-            'NUMLISTA':str, 
-            'NRO_ORDEN': int, 
+            'COD_ELECCION': ['int'],
+            'CODLISTA':['int'],
+            'DESCRIPCION': ['str'],
+            'DESCRIPCION_CORTA':['str'],
+            'NUMLISTA':['str','int'], 
+            'NRO_ORDEN': ['int'], 
         },
         
-        'mesas_candidaturas_seguridad_trep':{'codeleccio': int,
-                                             'deseleccio': str,
-                                             'cod_candid': int,
-                                             'descandida': str,
-                                             'coddeparta': int,
-                                             'desdeparta': str,
-                                             'coddistrit': int,
-                                             'desdistrit': str,
-                                             'codzona': int,
-                                             'deszona':str,
-                                             'codlocal':int,
-                                             'deslocal':str,
-                                             'mesa':int,
-                                             'codseguridad':int,
-                                             'ctx':int,
+        'mesas_candidaturas_seguridad_trep':{'codeleccio': ['int'],
+                                             'deseleccio': ['str'],
+                                             'cod_candid': ['int'],
+                                             'descandida': ['str'],
+                                             'coddeparta': ['int'],
+                                             'desdeparta': ['str'],
+                                             'coddistrit': ['int'],
+                                             'desdistrit': ['str'],
+                                             'codzona': ['int'],
+                                             'deszona':['str'],
+                                             'codlocal':['int'],
+                                             'deslocal':['str'],
+                                             'mesa':['int'],
+                                             'codseguridad':['int'],
+                                             'ctx':['int'],
                                              },
         
-        'mesas_certificados':{'codeleccion': int,
-                              'deseleccio': str,
-                              'codcandidatura':int,
-                              'descandida': str,
-                              'coddepartamento': int,
-                              'desdeparta':str,
-                              'coddistrito': int,
-                              'desdistrit': str,
-                              'codzona': int,
-                              'deszona':str,
-                              'codlocal':int,
-                              'deslocal':str,
-                              'mesa':int,
-                              'codseguridad':int,
-                              'ctx':int},
+        'mesas_certificados':{'codeleccion': ['int'],
+                              'deseleccio': ['str'],
+                              'codcandidatura':['int'],
+                              'descandida': ['str'],
+                              'coddepartamento': ['int'],
+                              'desdeparta':['str'],
+                              'coddistrito': ['int'],
+                              'desdistrit': ['str'],
+                              'codzona': ['int'],
+                              'deszona':['str'],
+                              'codlocal':['int'],
+                              'deslocal':['str'],
+                              'mesa':['int'],
+                              'codseguridad':['int'],
+                              'ctx':['int'],}
         
             
             
@@ -215,21 +215,20 @@ def verificaciones(file, name: str):
         
         #Analisis de type (necesito que esten todas las filas llenas).
         else: 
-            # Solo un tipo de datos
-            if len(set([type(row) for row in df[el].to_list()])) == 1:
+            # typo de datos permitidos
+           
                 #Correccion en caso de que el pandas me tome los numeros por floats
-                if set([type(row) for row in df[el].to_list()]) == {float}:
-                    df[el].astype(int)
+            if set([type(row) for row in df[el].to_list()]) == {float}:
+                df[el].astype(int)
                     
                 #verificacion que el tipo de datos es el esperado
-                
-                if types[filename][el] not in set([type(row) for row in df[el].to_list()]):
-                    
-                    flash.append(f'error en {el} sus datos deberian ser {types[filename][el]}, {set([type(row) for row in df[el].to_list()])}')
-                
-            else:
-                flash.append(f'error en {el}, hay mas de un tipo de datos en la columna')
+            actual_types=list(set([type(row).__name__ for row in df[el].to_list()]))
             
+            
+            if not all(el for types[filename][el] in actual_types):
+               flash.append(f'error en {el} sus datos de la columna {el}')
+                
+                
             
     
    
@@ -239,6 +238,7 @@ def verificaciones(file, name: str):
     if len(flash) > 0:
         return False, flash
     else: 
+        df.to_csv(f'proyect/static/files/upload_files/{filename}.csv', index = False, header=True)
         flash.append("El Archivo fue cargado con exito")
         return True , flash
     
