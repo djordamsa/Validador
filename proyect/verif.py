@@ -1,6 +1,6 @@
 import pandas , csv
 from typing import List
-
+import numpy as np
 
 
 
@@ -205,16 +205,17 @@ def verificaciones(file, name: str):
 
     for el in tags_list[filename]:
         
+        if filename != 'candidatos':
         ## Analisis de elementos NaN
-        hasnull: bool = False
-        for row in df[el]:
-            if pandas.isna(row):
-                hasnull= True
-        if hasnull:
-            flash.append(f"{el} posee filas vacias")
+            hasnull: bool = False
+            for row in df[el]:
+                if pandas.isna(row):
+                    hasnull= True
+            if hasnull:
+                flash.append(f"{el} posee filas vacias")
         
         #Analisis de type (necesito que esten todas las filas llenas).
-        else: 
+        
             # typo de datos permitidos
            
                 #Correccion en caso de que el pandas me tome los numeros por floats
@@ -228,8 +229,16 @@ def verificaciones(file, name: str):
             if not all(el for types[filename][el] in actual_types):
                flash.append(f'error en {el} sus datos de la columna {el}')
                 
-                
+        else:
+            for col in ['CODDEPARTAMENTO','CODDISTRITO','CODZONA']:
+                df[col] = df[col].fillna(-1)
+                df[col] = df[col].astype(int)
+                df[col] = df[col].astype(str)
+                df[col] = df[col].replace('-1', np.nan)
             
+            
+                    
+                  
     
    
            

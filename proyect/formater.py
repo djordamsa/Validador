@@ -211,7 +211,7 @@ def listas(upload_directory):
     
     
 
-def candidatos(candidaturas_file_path, candidatos_file_path):
+def candidatos(upload_directory, formated_directory):
     
     def get_ubicacion(nivel, nivel_para, dep, dis, zona, elec):
         if nivel == nivel_para:
@@ -226,7 +226,7 @@ def candidatos(candidaturas_file_path, candidatos_file_path):
         return ''
         
         
-    df_candidaturas = pandas.read_excel(candidaturas_file, dtype=str).fillna('')
+    df_candidaturas = pandas.read_csv(f'{upload_directory}/candidaturas.csv', dtype=str).fillna('')
     candidaturas = {}
     for index,row in df_candidaturas.iterrows():
         candidaturas[row['codcandidatura']] = {
@@ -237,7 +237,7 @@ def candidatos(candidaturas_file_path, candidatos_file_path):
             'tipo': row['tipo']
         }
         
-    df_candidatos = pandas.read_excel(candidatos_file_path, dtype=str).fillna('')
+    df_candidatos = pandas.read_csv(f'{upload_directory}/candidatos.csv', dtype=str).fillna('')
 
     # Paso los encabezados a minusculas 
     df_candidatos.columns = [c.lower() for c in df_candidatos.columns]
@@ -252,10 +252,17 @@ def candidatos(candidaturas_file_path, candidatos_file_path):
 
     claves_existente = []
     candidatos = []
-        
+    
+    df_paises=pandas.read_csv(f'{formated_directory}/paises.csv', dtype=str)
     lista_id_pais = df_paises['id_pais'].to_list()
+    
+    df_distritos=pandas.read_csv(f'{formated_directory}/distritos.csv', dtype=str)
     lista_id_distrito = df_distritos['id_distrito'].to_list()
+    
+    df_departamentos=pandas.read_csv(f'{formated_directory}/departamentos.csv', dtype=str)
     lista_id_departamento = df_departamentos['id_departamento'].to_list()
+    
+    df_localidades=pandas.read_csv(f'{formated_directory}/localidades.csv', dtype=str)
     lista_id_localidad = df_localidades['id_localidad'].to_list()
 
     for index,row in df_candidatos.iterrows():
@@ -343,5 +350,80 @@ def candidatos(candidaturas_file_path, candidatos_file_path):
         
         
     df_candidatos_output = pandas.DataFrame.from_dict(candidatos)
-    df_candidatos_output.to_csv (f'{juego_datos}/out/{version}/candidatos.csv', index = False, header=True)
-    df_candidatos_output
+    df_candidatos_output.to_csv (f'{formated_directory}/candidatos.csv', index = False, header=True)
+    
+    
+    
+def cargos(upload_directory):
+    
+    df_candidaturas = pandas.read_csv(f'{upload_directory}/candidaturas.csv', dtype=str).fillna('')
+    candidaturas = {}
+    for index,row in df_candidaturas.iterrows():
+        candidaturas[row['codcandidatura']] = {
+        'descripcion': row['descripcion'],
+        'descripcion_corta': row['descripcion_corta'],
+        'nivel': row['nivel'],
+        'nro_orden': row['nro_orden'],
+        'tipo': row['tipo']
+    }
+    
+    
+    
+    
+    
+    df_cargos_msa = pandas.DataFrame(columns=['id_cargo',
+                                            'id_cargo_descriptivo',
+                                            'descripcion',
+                                            'nro_orden',
+                                            'descripcion_corta',
+                                            'texto_asistida',
+                                            'max_selecciones',
+                                            'consulta_popular',
+                                            'cargo_ejecutivo',
+                                            'id_grupo',
+                                            'preferente',
+                                            'tachas',
+                                            'max_tachas',
+                                            'max_preferencias'])
+
+    def get_des_corta(descr):
+            res = ''
+            partes = descr.split(' ')
+            for p in partes:
+                if len(p) > 2:
+                    res += p[:2]+'. '
+            res = res.strip()[:20]
+            if len(res) > 20:
+                raise Exception('Exc')
+            return res
+        
+    # tipo 1 es lista cerrada (lo que nosotros llamamos ejecutivo)
+    id_grupo = 1
+    
+    for _,cand in candidaturas.items():
+        candidatura = cand['descripcion']
+        tipo_candidatura = cand['tipo']
+        id_cargo = cand['descripcion_corta']
+        
+        new_row = {
+            'id_cargo': id_cargo,
+            'id_cargo_descriptivo': id_cargo,
+            'descripcion': candidatura.strip(),
+            'nro_orden': id_grupo,
+            'descripcion_corta': id_cargo,
+            'texto_asistida': candidatura.strip(),
+            'max_selecciones': '1',
+            'consulta_popular': 'NO',
+            'cargo_ejecutivo': 'SI' if tipo_candidatura == '1' else 'NO',
+            'id_grupo': id_grupo,
+            'preferente': 'NO' if tipo_candidatura == '1' else 'SI',
+            'tachas': 'NO',
+            'max_tachas':'',
+            'max_preferencias': '' if tipo_candidatura == '1' else '1'
+        }
+        id_grupo += 1
+
+        df_cargos_msa = df_cargos_msa.append(new_row, ignore_index=True)
+
+    df_cargos_msa.to_csv('proyect/static/files/formated_files/cargos.csv', index = False, header=True)
+   
