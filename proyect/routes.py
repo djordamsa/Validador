@@ -28,77 +28,80 @@ def index():
     
 @pages.route("/validate" ,methods=['GET','POST'])
 def validate():
-    
+    upload_directory=Path('proyect/static/files/upload_files')
+    formated_directory=Path('proyect/static/files/formated_files')
     
     required_file_list_names=['mesas','listas', 'candidatos' , 'candidaturas'
                             ,'mesas_certificados', 
                             'mesas_candidaturas_seguridad_trep' ]
-    
+    status=[]
     form=UploadFileForm()
     if form.validate_on_submit():
         
         
-        status=[]
-        
-        for file in form.file.data:
-            status.append(f'Validando {file.filename}')
-            if allowed_file(file.filename):
-                
-                if file.filename.rsplit('.')[0] in required_file_list_names:
-                
-                    isValid,flash=verificaciones(file, file.filename)
-        
-                    if isValid:
-                    ## Aca guardaria las files en static, no se si hay una mejor manera de hacerlo, si es que va a un server o algo asi.
-                    # los archivos excel se guaran dañados.Por lo tanto en verificaciones los guardo como csv.
-                    #file.save(os.path.join(os.path.abspath(os.path.dirname('proyect/static/files/upload_files/')),secure_filename(file.filename))) 
-                        print(f'{file.filename} fue guardado con exito')
+        print(form.file.data)
+        if form.file.data:
+            
+            
+            for file in form.file.data:
+                status.append(f'Validando {file.filename}')
+                if allowed_file(file.filename):
                     
-                    for el in flash:
-                        status.append(el) 
-                 
-                else: status.append(f'{file.filename} no es el nombre de un archivo esperado')
-        
+                    if file.filename.rsplit('.')[0] in required_file_list_names:
+                    
+                        isValid,flash=verificaciones(file, file.filename, upload_directory)
+            
+                        if isValid:
+                        ## Aca guardaria las files en static, no se si hay una mejor manera de hacerlo, si es que va a un server o algo asi.
+                        # los archivos excel se guaran dañados.Por lo tanto en verificaciones los guardo como csv.
+                        #file.save(os.path.join(os.path.abspath(os.path.dirname('proyect/static/files/upload_files/')),secure_filename(file.filename))) 
+                            print(f'{file.filename} fue guardado con exito')
                         
+                        for el in flash:
+                            status.append(el) 
                     
-            else: status.append(f'Solo se aceptan formatos cvs y exel')
+                    else: status.append(f'{file.filename} no es el nombre de un archivo esperado')
             
                             
-               
-                
-                
-        ##formating
-        
-          
-        
-        required_file_list=['mesas.csv','listas.csv', 'candidatos.csv' , 'candidaturas.csv'
-                            ,'mesas_certificados.csv', 
-                            'mesas_candidaturas_seguridad_trep.csv' ]
-            
-        upload_directory=Path('proyect/static/files/upload_files')
-        formated_directory=Path('proyect/static/files/formated_files')
-        
-        files=os.listdir(upload_directory)
-        
-        if set(files).intersection(required_file_list):
-            
-            print("Estan todos los archivos requeridos, inicio fomateo")
-            paises(upload_directory, formated_directory)  
-            districtos(upload_directory, formated_directory)
-            departamentos(upload_directory, formated_directory)
-            localidades(upload_directory, formated_directory)
-            establecimientos(upload_directory, formated_directory)
-            mesas(upload_directory, formated_directory)
-            listas(upload_directory, formated_directory)
-            candidatos(upload_directory, formated_directory)
-            cargos(upload_directory, formated_directory)
-            magnitudes_y_cargos(upload_directory,formated_directory)
-            no_cargo_ubicacion(upload_directory,formated_directory)
-        
-        else:
-            status.append("Faltan Archivos")
-            
                         
+                else: status.append(f'Solo se aceptan formatos cvs y exel')
+                
+                                
+                
+                    
+                    
+            ##formating
+            
+            
+            
+            required_file_list=['mesas.csv','listas.csv', 'candidatos.csv' , 'candidaturas.csv'
+                                ,'mesas_certificados.csv', 
+                                'mesas_candidaturas_seguridad_trep.csv' ]
+                
+        
+            
+            files=os.listdir(upload_directory)
+            
+            if set(required_file_list) == set(files):
+                
+                print("Estan todos los archivos requeridos, inicio fomateo")
+                paises(upload_directory, formated_directory)  
+                districtos(upload_directory, formated_directory)
+                departamentos(upload_directory, formated_directory)
+                localidades(upload_directory, formated_directory)
+                establecimientos(upload_directory, formated_directory)
+                mesas(upload_directory, formated_directory)
+                listas(upload_directory, formated_directory)
+                candidatos(upload_directory, formated_directory)
+                cargos(upload_directory, formated_directory)
+                magnitudes_y_cargos(upload_directory,formated_directory)
+                no_cargo_ubicacion(upload_directory,formated_directory)
+            
+            else:
+                status.append("Faltan Archivos, por favor cargue los archivos restantes.")
+            
+        else:status.append("No ingreso ningun archivo.")
+                          
             
             
             

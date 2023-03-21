@@ -100,7 +100,7 @@ main{
     flex-direction: column;
     
     align-self: center;
-    min-height: 85vh;
+    min-height: 90vh;
     width:70vw;
     margin: 0 auto;
     background-color: var(--Ivory);
@@ -114,6 +114,7 @@ main{
 
 .section{
     margin-top: 2rem;
+    
 }
 
 .description__section{
@@ -161,11 +162,19 @@ main{
     display: flex;
     flex-direction: column;
     align-items: center;
+    
 
 }
-input[type='file']{
+
+input[type="file"] { 
+    
     display: none;
-}
+   
+  }
+  
+  input:focus + label {
+    outline: 2px solid;
+  }
 
 .pick__file__container{
     display: flex;
@@ -191,6 +200,10 @@ input[type='file']{
     border-radius: inherit;
     text-decoration: none;
     
+}
+
+.validar__btn:hover{
+    opacity: 70%;
 }
 .pick__file{
     display: inherit;

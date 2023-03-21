@@ -8,7 +8,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ['csv','xlsx']
 
-def verificaciones(file, name: str):
+def verificaciones(file, name: str, upload_directory):
     
     flash=[]
     print(f"Analizando {name}")
@@ -230,6 +230,8 @@ def verificaciones(file, name: str):
                flash.append(f'error en {el} sus datos de la columna {el}')
                 
         else:
+            # me cagaba los cvs en type float y por tener Nan no podia transformalos a int
+            
             for col in ['CODDEPARTAMENTO','CODDISTRITO','CODZONA']:
                 df[col] = df[col].fillna(-1)
                 df[col] = df[col].astype(int)
@@ -247,7 +249,7 @@ def verificaciones(file, name: str):
     if len(flash) > 0:
         return False, flash
     else: 
-        df.to_csv(f'proyect/static/files/upload_files/{filename}.csv', index = False, header=True)
+        df.to_csv(f'{upload_directory}/{filename}.csv', index = False, header=True)
         flash.append("El Archivo fue cargado con exito")
         return True , flash
     
