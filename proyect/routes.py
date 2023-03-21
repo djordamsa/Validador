@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 import os
 import pandas
 from proyect.verif import verificaciones, allowed_file
-from proyect.formater import cargos, paises, districtos, departamentos, localidades, establecimientos, mesas, listas, candidatos
+from proyect.formater import cargos, magnitudes_y_cargos, no_cargo_ubicacion, paises, districtos, departamentos, localidades, establecimientos, mesas, listas, candidatos
 import time
 from pathlib import Path
 
@@ -83,17 +83,21 @@ def validate():
         if set(files).intersection(required_file_list):
             
             print("Estan todos los archivos requeridos, inicio fomateo")
-            paises(upload_directory)  
-            districtos(upload_directory)
-            departamentos(upload_directory)
-            localidades(upload_directory)
-            establecimientos(upload_directory)
-            mesas(upload_directory)
-            listas(upload_directory)
+            paises(upload_directory, formated_directory)  
+            districtos(upload_directory, formated_directory)
+            departamentos(upload_directory, formated_directory)
+            localidades(upload_directory, formated_directory)
+            establecimientos(upload_directory, formated_directory)
+            mesas(upload_directory, formated_directory)
+            listas(upload_directory, formated_directory)
             candidatos(upload_directory, formated_directory)
-            cargos(upload_directory)
+            cargos(upload_directory, formated_directory)
+            magnitudes_y_cargos(upload_directory,formated_directory)
+            no_cargo_ubicacion(upload_directory,formated_directory)
         
-
+        else:
+            status.append("Faltan Archivos")
+            
                         
             
             

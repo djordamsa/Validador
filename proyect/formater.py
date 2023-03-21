@@ -2,7 +2,7 @@ import pandas
 from proyect.text_formater import quitar_comillas
 import json
 
-def paises(upload_directory:str):
+def paises(upload_directory, formated_directory):
     
     
     df= pandas.read_csv(f'{upload_directory}/mesas.csv')
@@ -18,10 +18,10 @@ def paises(upload_directory:str):
     #print(row['codeleccio'])
     df_paises = df_paises.drop_duplicates(subset ="id_pais")
 
-    df_paises.to_csv ('proyect/static/files/formated_files/paises.csv', index = False, header=True)
+    df_paises.to_csv (f'{formated_directory}/paises.csv', index = False, header=True)
     
 
-def districtos(upload_directory):
+def districtos(upload_directory, formated_directory):
     
     
     
@@ -39,10 +39,10 @@ def districtos(upload_directory):
         df_distritos.at[index,'descripcion'] = row['desdepartamento'].replace("'", "’").replace("\n", " ")
     
     df_distritos = df_distritos.drop_duplicates(subset ="id_distrito")
-    df_distritos.to_csv ('proyect/static/files/formated_files/distritos.csv', index = False, header=True)
+    df_distritos.to_csv (f'{formated_directory}/distritos.csv', index = False, header=True)
     
 
-def departamentos(upload_directory):
+def departamentos(upload_directory, formated_directory):
     
     
     
@@ -60,10 +60,10 @@ def departamentos(upload_directory):
     
     
     df_departamentos = df_departamentos.drop_duplicates(subset ="id_departamento")
-    df_departamentos.to_csv ('proyect/static/files/formated_files/departamentos.csv', index = False, header=True)
+    df_departamentos.to_csv (f'{formated_directory}/departamentos.csv', index = False, header=True)
     
 
-def localidades(upload_directory):
+def localidades(upload_directory, formated_directory):
     
     
     
@@ -80,11 +80,11 @@ def localidades(upload_directory):
 
 
     df_localidades = df_localidades.drop_duplicates(subset ="id_localidad")
-    df_localidades.to_csv ('proyect/static/files/formated_files/localidades.csv', index = False, header=True)
+    df_localidades.to_csv (f'{formated_directory}/localidades.csv', index = False, header=True)
     
 
 
-def establecimientos(upload_directory):
+def establecimientos(upload_directory, formated_directory):
     
     
     
@@ -102,11 +102,11 @@ def establecimientos(upload_directory):
     
     df_establecimientos = df_establecimientos.drop_duplicates(subset ="id_establecimiento")
 
-    df_establecimientos.to_csv ('proyect/static/files/formated_files/establecimientos.csv', index = False, header=True)
+    df_establecimientos.to_csv (f'{formated_directory}/establecimientos.csv', index = False, header=True)
     
     
 
-def mesas(upload_directory):
+def mesas(upload_directory, formated_directory):
     
     
     
@@ -128,10 +128,10 @@ def mesas(upload_directory):
         id_mesa += 1
     
     df_mesas_output = df_mesas_output.drop_duplicates(subset ="nro_mesa")
-    df_mesas_output.to_csv('proyect/static/files/formated_files/mesas.csv', index = False, header=True)
+    df_mesas_output.to_csv(f'{formated_directory}/mesas.csv', index = False, header=True)
     
     
-def listas(upload_directory):
+def listas(upload_directory, formated_directory):
     
     df= pandas.read_csv(f'{upload_directory}/listas.csv',dtype=str).fillna('')
    
@@ -205,7 +205,7 @@ def listas(upload_directory):
             listas.append(new_row)
         
     df_listas_output = pandas.DataFrame.from_dict(listas)
-    df_listas_output.to_csv('proyect/static/files/formated_files/listas.csv', index = False, header=True)
+    df_listas_output.to_csv(f'{formated_directory}/listas.csv', index = False, header=True)
     #df_listas_output[df_listas_output.duplicated('id_lista', keep=False)].to_csv('/tmp/errores_listas_duplicadas.csv')
     #assert len(df_listas_output[df_listas_output.duplicated('id_lista', keep=False)]) == 0, 'Existen listas duplicadas, consultar /tmp/errores_listas_duplicadas.csv'
     
@@ -354,7 +354,7 @@ def candidatos(upload_directory, formated_directory):
     
     
     
-def cargos(upload_directory):
+def cargos(upload_directory, formated_directory):
     
     df_candidaturas = pandas.read_csv(f'{upload_directory}/candidaturas.csv', dtype=str).fillna('')
     candidaturas = {}
@@ -425,5 +425,120 @@ def cargos(upload_directory):
 
         df_cargos_msa = df_cargos_msa.append(new_row, ignore_index=True)
 
-    df_cargos_msa.to_csv('proyect/static/files/formated_files/cargos.csv', index = False, header=True)
+    df_cargos_msa.to_csv(f'{formated_directory}/cargos.csv', index = False, header=True)
+
+def magnitudes_y_cargos(upload_directory, formated_directory):
+    magnitudes = []
+    
+    df_candidatos_output=pandas.read_csv(f'{formated_directory}/candidatos.csv')
+    
+    df_paises=pandas.read_csv(f'{formated_directory}/paises.csv', dtype=str)
    
+    
+    df_distritos=pandas.read_csv(f'{formated_directory}/distritos.csv', dtype=str)
+    
+    
+    df_departamentos=pandas.read_csv(f'{formated_directory}/departamentos.csv', dtype=str)
+   
+    
+    df_localidades=pandas.read_csv(f'{formated_directory}/localidades.csv', dtype=str)
+    
+    
+    
+    # pandas.set_option('display.max_rows', 500)
+    agrupados = df_candidatos_output.groupby(['id_cargo', 'id_pais', 'id_distrito', 'id_departamento', 'id_localidad', 'id_lista']).agg(['count'])
+    pre_magnitudes = agrupados.groupby(['id_cargo', 'id_pais', 'id_distrito', 'id_departamento', 'id_localidad']).first()[('id_candidato','count')]
+
+    last_cargo = None
+    for row, magnitud in pre_magnitudes.iteritems():
+        
+        id_pais = row[1]
+        id_distrito = row[2]
+        id_departamento = row[3]
+        id_localidad = row[4]
+        
+        if id_pais != '' and id_pais not in df_paises['id_pais'].to_list():
+            print(row['cedula'], ' se encuentra asociado a una ubicacion que no existe.')
+            continue
+        
+        if id_distrito != '' and id_distrito not in df_distritos['id_distrito'].to_list():
+            print(row['cedula'], ' se encuentra asociado a una ubicacion que no existe.')
+            continue
+        
+        if id_departamento != '' and id_departamento not in df_departamentos['id_departamento'].to_list():
+            print(row['cedula'], ' se encuentra asociado a una ubicacion que no existe.')
+            continue
+        
+        if id_localidad != '' and id_localidad not in df_localidades['id_localidad'].to_list():
+            print(row['cedula'], ' se encuentra asociado a una ubicacion que no existe.')
+            continue
+        
+        if row[0] != '' and row[0] != last_cargo:
+            last_cargo = row[0]
+            
+        new_row = {
+            'id_pais': row[1],
+            'id_distrito': row[2],
+            'id_departamento': row[3],
+            'id_localidad': row[4],
+            'id_cargo': last_cargo,
+            'titulares': magnitud,
+            'suplentes': '0',
+            'bancas': magnitud,
+            'piso': '1'
+        }
+        
+        magnitudes.append(new_row)
+    df_magnitudes = pandas.DataFrame.from_dict(magnitudes)
+    df_magnitudes.to_csv (f'{formated_directory}/magnitudes_cargos.csv', index = False, header=True)
+
+
+    cargos_especiales = []
+
+   
+    
+    especiales = ['BLC','NUL', 'VAC']
+    ind = 0
+
+    for index,row in df_magnitudes.iterrows():
+            for especial in especiales:
+                new_row = {
+                    'id_cargo': row['id_cargo'],
+                    'id_especial': especial,
+                    'id_pais': row.id_pais,
+                    'id_distrito': row.id_distrito,
+                    'id_departamento': row.id_departamento,
+                    'id_localidad': row.id_localidad,
+                    'habilitado': 'SI',
+                    'positivo': 'SI' if especial == 'BLC' else 'NO'
+                }
+                cargos_especiales.append(new_row)
+
+    df_cargos_especiales = pandas.DataFrame.from_dict(cargos_especiales)
+    df_cargos_especiales = df_cargos_especiales.drop_duplicates()
+    df_cargos_especiales.to_csv(f'{formated_directory}/cargo_especial_ubicacion.csv', index = False, header=True)
+    
+
+def no_cargo_ubicacion(upload_directory,formated_directory):
+    
+    df_mesas=pandas.read_csv(f'{upload_directory}/mesas.csv')
+    
+    
+    cargos_no_votados = ['RDJ', 'MFC', 'PVC']
+    no_cargos = []
+
+    for index, row in df_mesas.iterrows():
+        if row['tipo'] == 'MAYORES':
+            path_id = f"{row['codeleccion']}.{row['coddepartamento']}.{row['coddistrito']}.{row['codzona']}.{row['codlocal']}.{row['mesa']}"
+            for c in cargos_no_votados:
+                new_row = {
+                    'id_cargo': c,
+                    'id_localidad': '',
+                    'id_establecimiento': '',
+                    'id_mesa': '',
+                    'id_ubicacion': path_id
+                }
+                no_cargos.append(new_row)
+
+    df_no_cargo = pandas.DataFrame.from_dict(no_cargos)
+    df_no_cargo.to_csv(f'{formated_directory}/no_cargo_ubicacion.csv', index = False, header=True)
