@@ -81,7 +81,7 @@ def validate():
         
             
             files=os.listdir(upload_directory)
-            
+           
             if set(required_file_list) == set(files):
                 
                 print("Estan todos los archivos requeridos, inicio fomateo")
@@ -96,6 +96,7 @@ def validate():
                 cargos(upload_directory, formated_directory)
                 magnitudes_y_cargos(upload_directory,formated_directory)
                 no_cargo_ubicacion(upload_directory,formated_directory)
+                print(f'Formateo teminado, archivos guardados en {formated_directory}')
             
             else:
                 status.append("Faltan Archivos, por favor cargue los archivos restantes.")
